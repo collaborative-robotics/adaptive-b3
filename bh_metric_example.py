@@ -274,7 +274,6 @@ for iter in range(0,Ntests):
   #bb.set('FireState', firetype) 
 
   # set terrain state for current step
-  bb.set('TerrainState', t)
   bb.set('Terrain', t)
   
  
