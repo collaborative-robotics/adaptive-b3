@@ -43,7 +43,7 @@ if arg in ['S0', 'S1', 'S2', 'S3', 'S4', 'S5' ]:
 
 
 if(not valid_arg):
-    print "Command Line input", sys.argv, "is invalid. quitting()"
+    print "btc_icra_sim: Command Line input", sys.argv, "is invalid. quitting(). (use S0, S1, S2 etc)."
     quit()
     
 test = arg
