@@ -68,6 +68,7 @@ class WalkTillDestination(b3.Decorator):
     def __init__(self, child, max_loop=-1):
         super(WalkTillDestination, self).__init__(child)
         self.max_loop = max_loop
+        
 
     def open(self, tick):
         tick.blackboard.set('i', 0, tick.tree.id, self.id)

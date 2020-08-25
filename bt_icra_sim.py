@@ -1,4 +1,9 @@
-#  test
+#
+#   Basic humanoid robot with three terrains
+#    includes the Greedy selector
+#
+#  Based on the fire extinguisher scenario from Periera and Engel 2015
+#
 
 import sys
 import b3
@@ -21,22 +26,10 @@ if len(sys.argv) < 2:
   arg = 'INVALID'
 else:
   arg = sys.argv[1]
-  
+    
 valid_arg = False
-if arg == 'S0':
+if arg in ['S0', 'S1', 'S2', 'S2g', 'S3', 'S4', 'S5' ]:
     valid_arg = True
-if arg == 'S1':
-    valid_arg = True
-if arg == 'S2':
-    valid_arg = True
-if arg == 'S2g':
-    valid_arg = True
-if arg == 'S3':
-    valid_arg = True      
-if arg == 'S4':
-    valid_arg = True
-if arg == 'S5':
-    valid_arg = True 
 
 if(not valid_arg):
     print "Command Line input", sys.argv, "is invalid. quitting()"
