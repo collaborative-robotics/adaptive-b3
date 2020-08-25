@@ -10,12 +10,33 @@ to recent literature exploring the ability of BTs to adapt to their success or f
 “Selector” node of a BT tries alternative strategies (its children) and returns success only if all of its children
 return failure. This paper studies several means by which Selector nodes can learn from experience, in
 particular, learn conditional probabilities of success based on sensor information, and modify the execution
-order based on the learned iformation. Furthermore, a “Greedy Selector” is studied which only tries the child
+order based on the learned information. Furthermore, a “Greedy Selector” is studied which only tries the child
 having the highest success probability. Simulation results indicate significantly increased task performance,
 especially when frequentist probability estimate is conditioned on sensor information. The Greedy selector
 was ineffective unless it was preceded by a period of training in which all children were exercised.
  
-based on: 
+ 
+To run the demo, as used in the ArXiv paper above, 
+
+```
+> python2 bt_icra_sim.py ARG
+```
+Where ARG is one of ` ['S0', 'S1', 'S2', 'S2g', 'S3', 'S4', 'S5' ]` where 
+
+
+code | Selector Type
+-----|--------------
+S0 | Normal "dumb" selector
+S1 | Tick in descending order of probability of success
+S2 | P(S\|F) condition P(S) on the environment state
+S2g | Same as S2 with Greedy selector
+S3 | Tick in descending order of cost
+S4 | Tick in descending order of utility
+S5 | Tick in descending order of utility conditioned on env. state
+
+
+## based on: 
+
 
 # BEHAVIOR3PY
 
