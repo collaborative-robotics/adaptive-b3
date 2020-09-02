@@ -1,4 +1,4 @@
-# Adaptive Behavior Trees
+# Adaptive Behavior Trees which learn from experience
  - code and example
  - see [Hannaford et al., 2016](https://arxiv.org/pdf/1606.09219.pdf)
 
@@ -34,7 +34,6 @@ S3 | Tick in descending order of cost
 S4 | Tick in descending order of utility
 S5 | Tick in descending order of utility conditioned on env. state
 
-
 ## based on: 
 
 
@@ -62,3 +61,8 @@ NOTE: this version still lacks specific documentation, but almost everything you
 - **Completely free**, the core module and the visual editor are all published under the MIT License, which means that you can use them for your open source and commercial projects;
 
 - **Lightweight**!
+ 
+
+## [Wait!  I'm confused about these different BT repositories!](https://github.com/collaborative-robotics/ABT/blob/main/wait_im_confused.md)
+
+
