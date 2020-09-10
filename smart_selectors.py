@@ -1,14 +1,15 @@
-
-import sys
+#!/usr/bin/python2
+#
+#  Author: Blake Hannaford
+#
+#  A set of selector nodes which use different methods to choose which child to tick first. 
+#
 import b3 
-
-import numpy as np
 import random
-import itertools
 
 #########################################################################
 #
-#      Selector 0:  Choose children in order they are listed
+#      Selector 0:  Choose children in order they are listed (traditional selector)
 #
 #########################################################################       
 
@@ -257,7 +258,7 @@ class SmrtSel04(b3.Composite):
 #
 #      Selector 5:  Choose children in order of Utility(Node, State)
 #
-#     USE THIS ONLY ON LEAFS (because only they have states)
+#     USE THIS ONLY ON LEAVES (because only they have states)
 #
 #########################################################################       
 

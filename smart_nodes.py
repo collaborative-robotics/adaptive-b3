@@ -1,10 +1,17 @@
 
 import sys
-import b3 
+#!/usr/bin/python2
+#
+#    Author: Blake Hannaford
 
-import numpy as np
+#    A set of BT nodes to simulate the robot fire-fighting scenario*
+#
+#    * Renato de Pontes Pereira and Paulo Martins Engel. 
+#      A framework for constrained and adaptive behavior based agents. 
+#      arXiv Preprint: 1506.02312 [cs.AI], 2015.
+#
+import b3 
 import random
-import itertools
 
 #########################################################################
 #
