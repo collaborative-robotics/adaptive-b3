@@ -30,27 +30,28 @@ class SmrtSel00(b3.Composite):
             node.P_selector = node.prob()
             #print "Returned probability: ",p
             children.append(node)
-            # sort the probabilities (lowest first)
+            # for 00 DO NOT sort the probabilities (lowest first)
         #rank = sorted(children, key=lambda node: node.P_selector)  # sort by P(s|F)
         rank = children
         if(self.BHdebug == 1):
-            print "dumb selector (sel0): fixed order" 		 
+            print "dumb selector (sel00): fixed order" 		 
         N = len(rank)
         tmpCost = 0
         for j in range(0,N):
             # Try them in fixed order
             if(self.BHdebug  == 1):
-                print "Sel00:",self.Name," ticking "+rank[N-1-j].Name
-                print 'SmrSel00: cost: ',self.Cost
+            #if(True):
+                print "Sel00:",self.Name," ticking "+rank[j].Name
+                #print 'Sel00: cost: ',self.Cost
             status = rank[j]._execute(tick)
             tmpCost += rank[j].Cost
             self.Cost = tmpCost  # my cost equals total leaf costs
             if status != b3.FAILURE:
                 if(self.BHdebug == 1):
-                     print "Sel00: ",self.Name, "->", rank[j].name, " Succeeded"
+                     print "Sel00: ",self.Name, "->", rank[j].Name, " Succeeded"
                 return status
             if(self.BHdebug == 1):
-                 print "Sel00: ",self.Name, "->", rank[j].name, " Failed" 
+                 print "Sel00: ",self.Name, "->", rank[j].Name, " Failed" 
         return b3.FAILURE
         
         
