@@ -1,10 +1,9 @@
 #!/usr/bin/python2
 
 # Author: Blake Hannaford
-# Date: 2020-9-10
+# Date: 2020-9-12
 
-#  Now (11-Sep-20) introducting ROS and CRTK again
-# test version without ROS or CRTK
+# (11-Sep-20) A demo of Behavior trees driving CRTK and ROS.
 
 # based on crtk_cp_example.py:
 # Author: Anton Deguet
@@ -27,12 +26,14 @@
 # > rosrun crtk_pythoself.n_client crtk_arm_test.py <arm-name>
  
 
+####################################### (adaptiveb3 demo specific info:)
 # For the abt move_cp() example, here's the setup:
 
 # > mkdir CWS (a catkin workspace)
 
 # > cd CWS
-# > catkin_make   # set this up as an official catkin workspace
+# > mkdir src     # (odd that ROS makes you do this)
+# > catkin build 
 
 # > cd src
 # > git pull << the four crtk repos below (one per command) >>
@@ -47,7 +48,7 @@
               #-- adaptive-b3          (cloned here)
               #-- behavior3py          (abt_dev branch cloned here)
 #
-# #  Dont forget 
+# #  Don't forget 
 # > cd CWS
 # > source devel/setup.bash
 # > catkin build
@@ -58,6 +59,10 @@
 # > ln -s ../crtk-msgs .
 # > ln -s ../behaviour3py/b3 .
 #
+# the demo code is not runable permissions by default so
+# > cd src/adaptive-b3 
+# > chmod 755 crtk_abt_move_cp_example.py
+#
 # # Note, python doesn't like '-' in imports so you have to rename two packages:
 # > cd adaptive-b3
 # > mv crtk-python-client crtk_python_client 
@@ -65,12 +70,14 @@
 # 
 
 # fire up ROS
+# in another terminal...
 # > cd <<anywhere>>
 # > roscore &
 
 #
 #   Finally ready to run this simulation!!
 #
+# (back in first terminal)
 # > cd CWS
 # > rosrun adaptive_b3 crtk_abt_move_cp_example.py
 
@@ -98,18 +105,6 @@ import time
 #import smart_nodes as sn   # leaf nodes to simulate fire fighting robot scenario
 import smart_selectors as ss  # adaptive selector nodes using various algorithms.
 
-#########################################################################################
-##  quick and dirty methods to stub the PyKDL dependency
-#class F:
-    #def __init__(self,p=[0,0,0],M=np.ones([3,3])):
-        #self.p = p
-        #self.M = M
-        
-#def PyKDL.Vector( x,y,z):
-    #return [x,y,z]
-
-#def PyKDL.Rotation.RPY(r,p,z):
-    #return np.ones([3,3])
 
 #########################################################################################
 #
