@@ -28,7 +28,8 @@
 import crtk_python_client as crtk
 import math
 import sys
-#import rospy
+sys.path.insert(0,'/opt/ros/melodic/lib/python2.7/dist-packages')
+import rospy
 import numpy as np
 #import PyKDL
 
@@ -99,7 +100,6 @@ valid_points_list = [Start, A, B1, B2, B3, C]
 #     of success.   By adaptive BT execution, the robot will find the most reliable path from 
 #     A--> C (via Bi intermediate points). 
 #
-
 # 
 #   This leaf class will move our robot from one point to another.   To simulate real-world issues,
 #     The node will simulate a "failure" result by checking a random number.   If the 0-1.0 random draw
@@ -107,20 +107,21 @@ valid_points_list = [Start, A, B1, B2, B3, C]
 #     commands to crtk will cause a physical move command (move_cp()).
 #
 class move_to_point(b3.Action):
-    def __init__(self, p,target):
+    def __init__(self, p, goal_point):
+        super(move_to_point, self).__init__()
         if (p<0.0) or (p>1.0):
             print 'node initialized with invalid probability of success: ', p
             quit()
-        if not target in valid_points_list:
-            print 'node set for "illegal" point"', target
+        if not goal_point in valid_points_list:
+            print 'node set for "illegal" point"', goal_point
             quit()
-        #self.crtk_utils = crtk.utils(self, device_namespace)
-        #self.crtk_utils.add_operating_state()
-        #self.crtk_utils.add_measured_cp()
-        #self.crtk_utils.add_move_cp()
+        self.crtk_utils = crtk.utils(self, device_namespace)
+        self.crtk_utils.add_operating_state()
+        self.crtk_utils.add_measured_cp()
+        self.crtk_utils.add_move_cp()
         
         self.Ps = p
-        self.target_point = target
+        self.goal_point = goal_point
     
     def tick(self, tick):
         self.N_ticks += 1 
@@ -133,7 +134,7 @@ class move_to_point(b3.Action):
         if(a < self.Ps):
             if(self.BHdebug == 1):
                 print self.Name + " has succeeded "
-            self.move_cp(self.target_point)
+            self.move_cp(self.goal_point)
             return b3.SUCCESS
         else:
           if(self.BHdebug == 1):
@@ -214,7 +215,13 @@ class crtk_adaptive_bt_example:
         print 'Starting some test runouts'
         for iter in range(0,Ntests):
             print "Running Test number: ",iter
-            if self.tree.tick() == b3.SUCCESS:
+            # target is an unused param
+            # blackboard is the common data store
+            target = {}
+            bb = b3.Blackboard()   
+            bb.set('treeTickCount', 0)
+            bb.set('TotalCost',0)
+            if self.tree.tick(target,bb) == b3.SUCCESS:
                 self.n_success += 1
             else:
                 self.n_fail +=1
