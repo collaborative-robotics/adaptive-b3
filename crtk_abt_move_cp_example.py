@@ -36,7 +36,13 @@
 # > catkin build 
 
 # > cd src
-# > git pull << the four crtk repos below (one per command) >>
+# paste these four clones into your shell:
+'''
+git clone https://github.com/collaborative-robotics/crtk-msgs.git
+git clone https://github.com/collaborative-robotics/adaptive-b3.git
+git clone https://github.com/collaborative-robotics/behavior3py.git
+git clone https://github.com/collaborative-robotics/crtk-python-client.git
+'''
 
 #############  your files should look like #####################
 #CWS/--
@@ -59,12 +65,9 @@
 # > ln -s ../crtk-msgs .
 # > ln -s ../behaviour3py/b3 .
 #
-# the demo code is not runable permissions by default so
-# > cd src/adaptive-b3 
-# > chmod 755 crtk_abt_move_cp_example.py
 #
 # # Note, python doesn't like '-' in imports so you have to rename two packages:
-# > cd adaptive-b3
+# > cd src/adaptive-b3
 # > mv crtk-python-client crtk_python_client 
 # > mv crtk-msgs crtk_msgs
 # 
@@ -74,13 +77,23 @@
 # > cd <<anywhere>>
 # > roscore &
 
+#  a test you can do:
 #
+# > cd CWS
+# > rosrun adapti<tab>    # e.g. the tab key 
+# the above should autocomplete to > rosrun adaptive_b3
+#  this indicates that the ROS package is built.
+
 #   Finally ready to run this simulation!!
 #
 # (back in first terminal)
 # > cd CWS
 # > rosrun adaptive_b3 crtk_abt_move_cp_example.py
 
+# the demo code might not have  runable permissions by default so if rosrun fails try
+# > cd src/adaptive-b3 
+# > chmod 755 crtk_abt_move_cp_example.py
+#
 import crtk_python_client.src.crtk as crtk
 import crtk_msgs
 import math
