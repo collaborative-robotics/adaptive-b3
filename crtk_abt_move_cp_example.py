@@ -59,8 +59,8 @@
 # > mv crtk-msgs crtk_msgs
 # 
 
-import crtk_python_client as crtk
-import crtk-msgs
+import crtk_python_client.src.crtk as crtk
+import crtk_msgs
 import math
 import sys
 #  ROS melodic installation: 
@@ -85,54 +85,53 @@ import smart_selectors as ss  # adaptive selector nodes using various algorithms
 
 #########################################################################################
 ##  quick and dirty methods to stub the PyKDL dependency
-class F:
-    def __init__(self,p=[0,0,0],M=np.ones([3,3])):
-        self.p = p
-        self.M = M
+#class F:
+    #def __init__(self,p=[0,0,0],M=np.ones([3,3])):
+        #self.p = p
+        #self.M = M
         
-def PKDLVector( x,y,z):
-    return [x,y,z]
+#def PyKDL.Vector( x,y,z):
+    #return [x,y,z]
 
-def PKDLRot(r,p,z):
-    return np.ones([3,3])
+#def PyKDL.Rotation.RPY(r,p,z):
+    #return np.ones([3,3])
 
 #########################################################################################
 #
 #    Define some physical points (sort of corresponding to the figure)
 #
-#Start = PyKDL.Frame()
-Start = F()
+Start = PyKDL.Frame()
 # generic start pose
-Start.p = PKDLVector(0.0,0.0,0.0)
-Start.M = PKDLRot(0,0,0)
+Start.p = PyKDL.Vector(0.0,0.0,0.0)
+Start.M = PyKDL.Rotation.RPY(0,0,0)
 
 mm10 = 0.010
 
 #A = PyKDL.Frame()
-A = F()
-A.p = PKDLVector(mm10,mm10,mm10)
-A.M = PKDLRot(0,0,0)
+A = PyKDL.Frame()
+A.p = PyKDL.Vector(mm10,mm10,mm10)
+A.M = PyKDL.Rotation.RPY(0,0,0)
 
 #B1 = PyKDL.Frame()
-B1 = F()
-B1.p = PKDLVector(2*mm10,4*mm10,mm10)
-B1.M = PKDLRot(0,0,0)
+B1 = PyKDL.Frame()
+B1.p = PyKDL.Vector(2*mm10,4*mm10,mm10)
+B1.M = PyKDL.Rotation.RPY(0,0,0)
 
 #B2 = PyKDL.Frame()
-B2 = F()
-B2.p = PKDLVector(4*mm10,3*mm10,mm10)
-B2.M = PKDLRot(0,0,0)
+B2 = PyKDL.Frame()
+B2.p = PyKDL.Vector(4*mm10,3*mm10,mm10)
+B2.M = PyKDL.Rotation.RPY(0,0,0)
 
 #B3 = PyKDL.Frame()
-B3 = F()
-B3.p = PKDLVector(3*mm10,3*mm10,mm10)
-B3.M = PKDLRot(0,0,0)
+B3 = PyKDL.Frame()
+B3.p = PyKDL.Vector(3*mm10,3*mm10,mm10)
+B3.M = PyKDL.Rotation.RPY(0,0,0)
 
 
 #C = PyKDL.Frame()
-C = F()
-C.p = PKDLVector(2.5*mm10,2*mm10,mm10)
-C.M = PKDLRot(0,0,0)
+C = PyKDL.Frame()
+C.p = PyKDL.Vector(2.5*mm10,2*mm10,mm10)
+C.M = PyKDL.Rotation.RPY(0,0,0)
 
 
 valid_points_list = [Start, A, B1, B2, B3, C]
@@ -149,7 +148,10 @@ valid_points_list = [Start, A, B1, B2, B3, C]
 #     commands to crtk will cause a physical move command (move_cp()).
 #
 class move_to_point(b3.Action):
-    def __init__(self, p, goal_point):
+    # p = prob of success (fixed param)
+    # goal_point = where to move
+    # parentcl = parent class (which contains the crtk_moveto method instance
+    def __init__(self, p, goal_point,parentcl):
         super(move_to_point, self).__init__()
         if (p<0.0) or (p>1.0):
             print 'node initialized with invalid probability of success: ', p
@@ -160,6 +162,7 @@ class move_to_point(b3.Action):
         
         self.Ps = p
         self.goal_point = goal_point
+        self.move_to_call = parentcl.move_cp  # this is the function which does a move via crtk
     
     def tick(self, tick):
         self.N_ticks += 1 
@@ -172,22 +175,22 @@ class move_to_point(b3.Action):
         if(a < self.Ps):
             if(self.BHdebug == 1):
                 print self.Name + " has succeeded "
-            self.move_cp(self.goal_point)
+            self.move_cp_wrap(self.goal_point)
             return b3.SUCCESS
         else:
           if(self.BHdebug == 1):
               print self.Name + " has failed"
           return b3.FAILURE
       
-    def move_cp(self,point):
-        pass
-        if False:
-            print('Robot is moving now')
-            for i in range(10):
-                print '>',
-                sys.stdout.flush()
-                time.sleep(0.05)
-            print''
+    def move_cp_wrap(self,point):
+        self.move_to_call(point)  # invoke the move_cp() method
+        #if False:
+            #print('Robot is moving now')
+            #for i in range(10):
+                #print '>',
+                #sys.stdout.flush()
+                #time.sleep(0.05)
+            #print''
 
 # example of application using device.py
 class crtk_adaptive_bt_example:
@@ -216,11 +219,11 @@ class crtk_adaptive_bt_example:
         
         self.tree = b3.BehaviorTree()
         # instantiate the leaves
-        self.n_st_A = move_to_point(1.0, A) # always succeeds
-        self.n_A_B1 = move_to_point(0.1, B1) # rarely succeeds
-        self.n_A_B2 = move_to_point(0.3, B2) # sometimes succeeds
-        self.n_A_B3 = move_to_point(0.9, B3) # usually succeeds
-        self.n_Bx_C = move_to_point(1.0, C)   # always succeeds
+        self.n_st_A = move_to_point(1.0, A, self) # always succeeds
+        self.n_A_B1 = move_to_point(0.1, B1,self) # rarely succeeds
+        self.n_A_B2 = move_to_point(0.3, B2,self) # sometimes succeeds
+        self.n_A_B3 = move_to_point(0.9, B3,self) # usually succeeds
+        self.n_Bx_C = move_to_point(1.0, C,self)   # always succeeds
         # give them descriptive names
         self.n_st_A.Name = 'Move Start->A'
         self.n_A_B1.Name = 'Move A->B1'
