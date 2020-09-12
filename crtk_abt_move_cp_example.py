@@ -26,14 +26,19 @@
 # To communicate with the arm using ROS topics, see the python based example dvrk_arm_test.py:
 # > rosrun crtk_pythoself.n_client crtk_arm_test.py <arm-name>
  
-#CRTK example imports
 
-# heres the setup:
+# For the abt move_cp() example, here's the setup:
 
-# CWS (a catkin workspace)
+# > mkdir CWS (a catkin workspace)
+
+# > cd CWS
+# > catkin_make   # set this up as an official catkin workspace
+
+# > cd src
+# > git pull << the four crtk repos below (one per command) >>
 
 #############  your files should look like #####################
-# CWS/--
+#CWS/--
       #|
       #-- src/ --
               #|
@@ -47,17 +52,27 @@
 # > source devel/setup.bash
 # > catkin build
 #
-# # link all the deps into your adaptive-b3 repo:
+# # link all the deps into your adaptive-b3 folder:
 # > cd src/adaptive-b3
 # > ln -s ../crtk-python-client .
 # > ln -s ../crtk-msgs .
 # > ln -s ../behaviour3py/b3 .
 #
-# # Note, python doesn't like '-' in imports so you have to rename your package:
+# # Note, python doesn't like '-' in imports so you have to rename two packages:
 # > cd adaptive-b3
 # > mv crtk-python-client crtk_python_client 
 # > mv crtk-msgs crtk_msgs
 # 
+
+# fire up ROS
+# > cd <<anywhere>>
+# > roscore &
+
+#
+#   Finally ready to run this simulation!!
+#
+# > cd CWS
+# > rosrun adaptive_b3 crtk_abt_move_cp_example.py
 
 import crtk_python_client.src.crtk as crtk
 import crtk_msgs
