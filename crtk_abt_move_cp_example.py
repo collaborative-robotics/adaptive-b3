@@ -243,7 +243,7 @@ class crtk_adaptive_bt_example:
         print(rospy.get_caller_id() + ' -> configuring crtk_device_test for: ' + device_namespace)
         # populate this class with all the ROS topics we need
         self.crtk_utils = crtk.utils(self, device_namespace)
-        self.crtk_utils.add_operating_state()
+        #self.crtk_utils.add_operating_state()     # this is not found if uncommented but not needed
         self.crtk_utils.add_measured_cp()
         self.crtk_utils.add_move_cp()
         
