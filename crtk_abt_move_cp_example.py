@@ -26,7 +26,7 @@
 # > rosrun crtk_pythoself.n_client crtk_arm_test.py <arm-name>
  
 
-####################################### (adaptiveb3 demo specific info:)
+####################################### (adaptive-b3 demo specific info:)
 # For the abt move_cp() example, here's the setup:
 
 # > mkdir CWS (a catkin workspace)
@@ -72,6 +72,16 @@ git clone https://github.com/collaborative-robotics/crtk-python-client.git
 # > mv crtk-msgs crtk_msgs
 # 
 
+# Or ...  combining the two steps above, cd into the package 
+# > cd src/adaptive-b3
+#
+# and execute:
+'''
+ln -s ../crtk-python-client crtk_python_client
+ln -s ../crtk-msgs          crtk_msgs
+ln -s ../behaviour3py/b3 b3
+'''
+
 # fire up ROS
 # in another terminal...
 # > cd <<anywhere>>
@@ -94,7 +104,8 @@ git clone https://github.com/collaborative-robotics/crtk-python-client.git
 # > cd src/adaptive-b3 
 # > chmod 755 crtk_abt_move_cp_example.py
 #
-import crtk_python_client.src.crtk as crtk
+#import crtk_python_client as crtk
+import crtk
 import crtk_msgs
 import math
 import sys
